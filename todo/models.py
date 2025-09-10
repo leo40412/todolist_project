@@ -11,3 +11,4 @@ class Todo(models.Model):
 
     def __str__(self):
         return f"{self.id} - {self.title} 建立時間{self.created.strftime("%Y-%m-%d %H:%M:%S")} 是否重要:{self.important}"
+        # 如果沒用str 會把以上的設定也show出來

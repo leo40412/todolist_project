@@ -6,6 +6,16 @@ from .models import Todo
 # Create your views here.
 
 
+def view_todo(request, id):
+    todo = None  # 寫錯的話也要回傳
+    try:
+        todo = Todo.objects.get(id=id)  # .get 唯一
+    except Exception as e:
+        print(e)
+
+    return render(request, "todo/view_todo.html", {"todo": todo})
+
+
 def todolist(request):
     todos = Todo.objects.all()  # todo資料庫全部資料
     return render(request, "todo/todolist.html", {"todos": todos})
