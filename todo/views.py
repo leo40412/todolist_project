@@ -1,32 +1,22 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import json
 from .models import Todo
+from .forms import TodoForm
 
 # Create your views here.
 
 
 def create_todo(request):
-    # GET(網址的部分是get)
-    # POST(表單送出)
     message = ""  # 提示錯誤
+    form = TodoForm()
+
     if request.method == "POST":
-        print(request.POST)
-        title = request.POST.get("title")
-        if title == "":
-            print("標題欄位不能為空")
-            message = "標題欄位不能為空"
-        else:
-            text = request.POST.get("text")
-            important = request.POST.get("important")
-
-            important = True if important == "on" else False
-
-            # 建立資料
-            todo = Todo.objects.create(title=title, text=text, important=important)
-            todo.save()  # commit
-            message = "建立成功"
-    return render(request, "todo/create_todo.html", {"message": message})
+        form = TodoForm(request.POST)
+        form.save()
+        message = "建立成功"
+        return redirect("todolist")  # 跳轉到首頁
+    return render(request, "todo/create_todo.html", {"message": message, "form": form})
 
 
 def view_todo(request, id):
@@ -40,7 +30,10 @@ def view_todo(request, id):
 
 
 def todolist(request):
-    todos = Todo.objects.all()  # todo資料庫全部資料
+    todos = Todo.objects.all().order_by("-created")
+    # order_by -> 排序
+    # - 降序
+    # all() todo資料庫全部資料
     return render(request, "todo/todolist.html", {"todos": todos})
 
 

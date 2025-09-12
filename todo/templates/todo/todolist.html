@@ -20,6 +20,7 @@
 
 <body>
     <h1>TodoList</h1>
+    <a href="{% url 'create_todo' %}">新增代辦事項</a>
     {% for todo in todos %}
     <div class="todo">
         <h4>{{todo.created}}</h4>

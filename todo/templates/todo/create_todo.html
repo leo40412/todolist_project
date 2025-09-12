@@ -19,18 +19,7 @@
     <form action="" method="POST">
         {% csrf_token %}
         {# post比較保密，必須要打這段才不會報錯 #}
-        <div>
-            <label for="title">標題</label>
-            <input type="text" id="title" name="title">
-        </div>
-        <div>
-            <label for="text">內容</label>
-            <textarea type="text" id="text" name="text"></textarea>
-        </div>
-        <div>
-            <input type="checkbox" id="important" name="important">
-            <label for="important">重要</label>
-        </div>
+        {{ form }}
         <button type="submit">提交</button>
     </form>
     {{message}}
