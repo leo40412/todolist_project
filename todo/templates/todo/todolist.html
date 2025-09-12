@@ -30,6 +30,11 @@
         </a>
         <p>{{todo.text}}</p>
         <u>{{todo.important}}</u>
+        {% if todo.date_completed %}
+        <p>
+            完成時間:<u>{{todo.date_completed}}</u>
+        </p>
+        {% endif %}
     </div>
     {% endfor %}
 </body>

@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import json
 from .models import Todo
 from .forms import TodoForm
+from datetime import datetime
 
 # Create your views here.
 
@@ -20,13 +21,28 @@ def create_todo(request):
 
 
 def view_todo(request, id):
-    todo = None  # 寫錯的話也要回傳
+    # todo = None  # 寫錯的話也要回傳
+    message = ""
     try:
         todo = Todo.objects.get(id=id)  # .get 唯一
+        form = TodoForm(instance=todo)  # 實際物件->instance
     except Exception as e:
         print(e)
 
-    return render(request, "todo/view_todo.html", {"todo": todo})
+    if request.method == "POST":
+        form = TodoForm(request.POST, instance=todo)  # 把修改的資料抓出來
+        todo = form.save(commit=False)  # 暫存
+
+        if todo.completed:
+            todo.date_completed = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            todo.date_completed = None
+
+        form.save()
+        message = "更新成功"
+    return render(
+        request, "todo/view_todo.html", {"todo": todo, "form": form, "message": message}
+    )
 
 
 def todolist(request):
