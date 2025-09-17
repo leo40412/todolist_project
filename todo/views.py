@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import json
 from .models import Todo
-from .forms import TodoForm
+from .forms import TodoForm, CreateTodoForm
 from datetime import datetime
 
 # Create your views here.
@@ -10,14 +10,24 @@ from datetime import datetime
 
 def create_todo(request):
     message = ""  # 提示錯誤
-    form = TodoForm()
+    form = CreateTodoForm()
 
     if request.method == "POST":
-        form = TodoForm(request.POST)
+        form = CreateTodoForm(request.POST)
         form.save()
         message = "建立成功"
         return redirect("todolist")  # 跳轉到首頁
     return render(request, "todo/create_todo.html", {"message": message, "form": form})
+
+
+def delete_todo(request, id):
+    try:
+        todo = Todo.objects.get(id=id)  # .get 唯一
+        todo.delete()
+    except Exception as e:
+        print(e)
+
+    return redirect("todolist")
 
 
 def view_todo(request, id):
@@ -40,6 +50,7 @@ def view_todo(request, id):
 
         form.save()
         message = "更新成功"
+        return redirect("todolist")
     return render(
         request, "todo/view_todo.html", {"todo": todo, "form": form, "message": message}
     )

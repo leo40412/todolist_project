@@ -23,6 +23,9 @@
     <a href="{% url 'create_todo' %}">新增代辦事項</a>
     {% for todo in todos %}
     <div class="todo">
+        <a href="{% url 'delete_todo' todo.id %}" onclick="return confirm('是否刪除')">
+            刪除
+        </a>
         <h4>{{todo.created}}</h4>
         <a href="{% url 'viewtodo' todo.id %}">
             {# urls,連結網頁後面的name="xxx" #}
