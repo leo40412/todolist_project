@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth import login, logout, authenticate  # 確認帳號密碼
 
 
 # Create your views here.
@@ -19,12 +20,29 @@ def user_register(request):
         elif password1 != password2:
             message = "兩次密碼不相同"
         else:
+            # 使用者名稱已存在
             if User.objects.filter(username=username):
                 message = "使用者名稱已存在"
             else:
                 User.objects.create_user(username=username, password=password1).save()
                 message = "使用者註冊成功"
-
-        # 使用者名稱已存在
+                return redirect("user_login")
 
     return render(request, "user/register.html", {"form": form, "message": message})
+
+
+def user_login(request):
+    message = ""
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        print(username, password)
+        user = authenticate(request, username=username, password=password)
+        if not user:
+            message = "使用者名稱或密碼錯誤!"
+        else:
+            login(request, user)
+            message = "登陸成功"
+            return redirect("todolist")
+
+    return render(request, "user/login.html", {"message": message})
