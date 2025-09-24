@@ -19,9 +19,16 @@
 </head>
 
 <body>
-    <a href="{% url 'user_register' %}">註冊</a>
-    <h1>TodoList</h1>
+    {% if user.is_authenticated %} {# 確認user登陸 #}
+    使用者:{{user.username}}
+    <a href="{% url 'user_logout' %}">登出</a>
     <a href="{% url 'create_todo' %}">新增代辦事項</a>
+    {% else %}
+    <a href="{% url 'user_login' %}">註冊</a>
+    <a href="{% url 'user_register' %}">註冊</a>
+    {% endif %}
+
+    <h1>TodoList</h1>
     {% for todo in todos %}
     <div class="todo">
         <a href="{% url 'delete_todo' todo.id %}" onclick="return confirm('是否刪除')">

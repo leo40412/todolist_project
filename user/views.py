@@ -5,6 +5,14 @@ from django.contrib.auth import login, logout, authenticate  # 確認帳號密�
 
 
 # Create your views here.
+
+
+def user_logout(request):
+    logout(request)
+
+    return redirect("user_login")
+
+
 def user_register(request):
     message = ""
     form = UserCreationForm()
