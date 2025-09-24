@@ -1,32 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% block title %}
+<title>檢視</title>
+{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>首頁</title>
-    <style>
-        .todo {
-            padding: 10px;
-            margin: 6px;
-            background-color: antiquewhite;
-            border-radius: 12px;
-            width: 600px;
-            text-align: center;
-            align-items: center;
-        }
-    </style>
-</head>
+{% block css %}
+<style>
+.todo {
+    padding: 10px;
+    margin: 6px;
+    background-color: antiquewhite;
+    border-radius: 12px;
+    width: 600px;
+    text-align: center;
+    align-items: center;
+}
+</style>
+{% endblock %}
 
-<body>
-    <h1>View Todo</h1>
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">提交</button>
-    </form>
-    {{message}}
-    <a href="{% url 'todolist' %}">回首頁</a>
-</body>
-
-</html>
+{% block content %}
+<h1>View Todo</h1>
+<form action="" method="POST">
+{% csrf_token %}
+{{ form.as_p }}
+<button type="submit">提交</button>
+</form>
+{{message}}
+<a href="{% url 'todolist' %}">回首頁</a>
+{% endblock %}

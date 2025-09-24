@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>首頁</title>
+    {% extends 'base.html' %}
+    
+    {% block title %}
+    <title>代辦事項</title>
+    {% endblock %}
+    {% block css %}
     <style>
         .todo {
             padding: 10px;
@@ -16,23 +15,15 @@
             align-items: center;
         }
     </style>
-</head>
+    {% endblock %}
 
-<body>
-    {% if user.is_authenticated %} {# 確認user登陸 #}
-    使用者:{{user.username}}
-    <a href="{% url 'user_logout' %}">登出</a>
-    <a href="{% url 'create_todo' %}">新增代辦事項</a>
-    {% else %}
-    <a href="{% url 'user_login' %}">登陸</a>
-    <a href="{% url 'user_register' %}">註冊</a>
-    {% endif %}
-
+    {% block content %}
     <h1>TodoList</h1>
+    
     {% if not todos %}
     <h2>無代辦事項，請先新增或登入</h2>
     {% endif %}
-    
+
     {% for todo in todos %}
     <div class="todo">
         <a href="{% url 'delete_todo' todo.id %}" onclick="return confirm('是否刪除')">
@@ -52,6 +43,4 @@
         {% endif %}
     </div>
     {% endfor %}
-</body>
-
-</html>
+    {% endblock %}
