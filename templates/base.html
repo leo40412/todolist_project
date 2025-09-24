@@ -1,27 +1,97 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block title %}
+    <title>待辦清單系統</title>
     {% endblock %}
 
-    {% block css %}
+    <style>
+        /* Reset */
+        body,
+        h1,
+        h2,
+        h3,
+        p,
+        ul,
+        li,
+        a {
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft JhengHei", sans-serif;
+        }
+
+        body {
+            background-color: #cecfcf;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(90deg, #4e73df, #224abe);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 8px;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+
+        .navbar a:hover {
+            color: #ffd43b;
+        }
+
+        .navbar .left-links,
+        .navbar .right-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+
+    {% block style %}
     {% endblock %}
 </head>
+
 <body>
-    {% if user.is_authenticated %} {# 確認user登陸 #}
-    使用者:{{user.username}}<br>
-    <a href="{% url 'todolist' %}">首頁</a>
-    <a href="{% url 'user_logout' %}">登出</a>
-    <a href="{% url 'create_todo' %}">新增代辦事項</a>
-    {% else %}
-    <a href="{% url 'user_login' %}">登陸</a>
-    <a href="{% url 'user_register' %}">註冊</a>
-    {% endif %}
+    <div class="navbar">
+        <div class="left-links">
+            <a href="{% url 'todolist' %}">🏠 首頁</a>
+        </div>
+        <div class="right-links">
+            {% if request.user.is_authenticated %}
+            <span>👤 {{ request.user.username }}</span>
+            <a href="{% url 'create_todo' %}">新增待辦</a>
+            <a href="{% url 'user_logout' %}">登出</a>
+            {% else %}
+            <a href="{% url 'user_login' %}">登入</a>
+            <a href="{% url 'user_register' %}">註冊</a>
+            {% endif %}
+        </div>
+    </div>
 
-    {% block content %}
-    {% endblock %}
-
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
+
 </html>
